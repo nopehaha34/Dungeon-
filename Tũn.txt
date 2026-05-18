@@ -1467,3 +1467,213 @@ Tab5:AddToggle({
 		end)
 	end
 })
+getgenv().AutoDungeon = false
+getgenv().AutoSuriken = false
+getgenv().AutoLock = false
+
+-- Check Garriot
+local function GetGarriot()
+	local folder = workspace:FindFirstChild("World Mobs")
+
+	if folder and folder:FindFirstChild("Event Mobs") then
+		return folder["Event Mobs"]:FindFirstChild("Garriot")
+	end
+end
+
+-- =========================
+-- AUTO DUNGEON
+-- =========================
+Tab5:AddToggle({
+	Name = "Auto Dungeon garriot v2",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoDungeon = Value
+
+		task.spawn(function()
+			local currentIndex = 1
+			local lastSwitch = tick()
+
+			while getgenv().AutoDungeon do
+				local garriot = GetGarriot()
+
+				-- Nếu Garriot tồn tại thì dừng Auto Dungeon
+				if garriot
+					and garriot:FindFirstChild("Humanoid")
+					and garriot.Humanoid.Health > 0 then
+
+					task.wait(1)
+
+				else
+					local mobs = {}
+
+					local folder = workspace:FindFirstChild("World Mobs")
+
+					if folder and folder:FindFirstChild("Event Mobs") then
+						for _, mob in pairs(folder["Event Mobs"]:GetChildren()) do
+							if mob:IsA("Model") and mob.Name ~= "Garriot" then
+								local hrp = mob:FindFirstChild("HumanoidRootPart")
+									or mob.PrimaryPart
+
+								if hrp then
+									table.insert(mobs, hrp)
+								end
+							end
+						end
+					end
+
+					if #mobs > 0 then
+						if currentIndex > #mobs then
+							currentIndex = 1
+						end
+
+						if tick() - lastSwitch >= 3 then
+							currentIndex += 1
+
+							if currentIndex > #mobs then
+								currentIndex = 1
+							end
+
+							lastSwitch = tick()
+						end
+
+						local mob = mobs[currentIndex]
+
+						if mob then
+							local pos = mob.Position
+
+							local args = {
+								{
+									Camera = CFrame.new(
+										pos + Vector3.new(0,3,8),
+										pos
+									),
+
+									SkillId = "101",
+									Began = true,
+
+									CFrame = CFrame.new(
+										pos + Vector3.new(0,0,5),
+										pos
+									),
+
+									["Typ\208\181"] = 1,
+
+									Aim = vector.create(
+										pos.X,
+										pos.Y,
+										pos.Z
+									)
+								}
+							}
+
+							game:GetService("ReplicatedStorage")
+								.Remotes.SkillRemote
+								:FireServer(unpack(args))
+						end
+					end
+
+					task.wait(0.1)
+				end
+			end
+		end)
+	end
+})
+
+-- =========================
+-- AUTO SURIKEN
+-- =========================
+Tab5:AddToggle({
+	Name = "Auto suriken kill boss",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoSuriken = Value
+
+		task.spawn(function()
+			while getgenv().AutoSuriken do
+				local garriot = GetGarriot()
+
+				if garriot
+					and garriot:FindFirstChild("Humanoid")
+					and garriot.Humanoid.Health > 0 then
+
+					local hrp = garriot:FindFirstChild("HumanoidRootPart")
+						or garriot.PrimaryPart
+
+					if hrp then
+						local pos = hrp.Position
+
+						local args = {
+							{
+								Camera = CFrame.new(
+									pos + Vector3.new(10,5,10),
+									pos
+								),
+
+								SkillId = "128",
+								Began = true,
+
+								CFrame = CFrame.new(
+									pos + Vector3.new(5,0,5),
+									pos
+								),
+
+								["Typ\208\181"] = 1,
+
+								Aim = vector.create(
+									pos.X,
+									pos.Y,
+									pos.Z
+								)
+							}
+						}
+
+						game:GetService("ReplicatedStorage")
+							:WaitForChild("Remotes")
+							:WaitForChild("SkillRemote")
+							:FireServer(unpack(args))
+					end
+				end
+
+				task.wait(0.2)
+			end
+		end)
+	end
+})
+
+-- =========================
+-- AUTO LOCK
+-- =========================
+Tab5:AddToggle({
+	Name = "Auto lock",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoLock = Value
+
+		task.spawn(function()
+			while getgenv().AutoLock do
+				local garriot = GetGarriot()
+
+				if garriot then
+					local args = {
+						garriot
+					}
+
+					game:GetService("ReplicatedStorage")
+						:WaitForChild("Packages")
+						:WaitForChild("_Index")
+						:WaitForChild("sleitnick_knit@1.4.7")
+						:WaitForChild("knit")
+						:WaitForChild("Services")
+						:WaitForChild("SkillManager")
+						:WaitForChild("RE")
+						:WaitForChild("LockedOnChanged")
+						:FireServer(unpack(args))
+				end
+
+				task.wait(0.2)
+			end
+		end)
+	end
+})
+
+OrionLib:Init()
