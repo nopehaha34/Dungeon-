@@ -32,6 +32,12 @@ local Tab4 = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local Tab5 = Window:MakeTab({
+	Name = "Garriot ngu🤓",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local AutoFarm = false
 
 -- Hàm tìm mob
