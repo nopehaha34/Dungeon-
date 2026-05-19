@@ -1,3 +1,110 @@
+local correctKey = "FMC66CMC"
+
+local CoreGui = game:GetService("CoreGui")
+
+-- Xóa GUI cũ nếu có
+pcall(function()
+	CoreGui:FindFirstChild("KeySystemGui"):Destroy()
+end)
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "KeySystemGui"
+ScreenGui.Parent = CoreGui
+
+local Main = Instance.new("Frame")
+Main.Size = UDim2.new(0, 320, 0, 190)
+Main.Position = UDim2.new(0.5, -160, 0.5, -95)
+Main.BackgroundColor3 = Color3.fromRGB(25,25,25)
+Main.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner", Main)
+UICorner.CornerRadius = UDim.new(0,12)
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1,0,0,40)
+Title.BackgroundTransparency = 1
+Title.Text = "Garriot Key System"
+Title.TextColor3 = Color3.new(1,1,1)
+Title.TextScaled = true
+Title.Font = Enum.Font.GothamBold
+Title.Parent = Main
+
+local KeyBox = Instance.new("TextBox")
+KeyBox.Size = UDim2.new(0,280,0,40)
+KeyBox.Position = UDim2.new(0.5,-140,0,55)
+KeyBox.PlaceholderText = "Enter Key..."
+KeyBox.Text = ""
+KeyBox.TextColor3 = Color3.new(1,1,1)
+KeyBox.BackgroundColor3 = Color3.fromRGB(40,40,40)
+KeyBox.Font = Enum.Font.Gotham
+KeyBox.TextScaled = true
+KeyBox.Parent = Main
+
+local Corner2 = Instance.new("UICorner", KeyBox)
+Corner2.CornerRadius = UDim.new(0,10)
+
+local GetKey = Instance.new("TextButton")
+GetKey.Size = UDim2.new(0,130,0,40)
+GetKey.Position = UDim2.new(0,20,0,115)
+GetKey.Text = "Get Key"
+GetKey.TextScaled = true
+GetKey.Font = Enum.Font.GothamBold
+GetKey.TextColor3 = Color3.new(1,1,1)
+GetKey.BackgroundColor3 = Color3.fromRGB(50,50,50)
+GetKey.Parent = Main
+
+local Corner3 = Instance.new("UICorner", GetKey)
+Corner3.CornerRadius = UDim.new(0,10)
+
+local CheckKey = Instance.new("TextButton")
+CheckKey.Size = UDim2.new(0,130,0,40)
+CheckKey.Position = UDim2.new(1,-150,0,115)
+CheckKey.Text = "Check Key"
+CheckKey.TextScaled = true
+CheckKey.Font = Enum.Font.GothamBold
+CheckKey.TextColor3 = Color3.new(1,1,1)
+CheckKey.BackgroundColor3 = Color3.fromRGB(0,170,80)
+CheckKey.Parent = Main
+
+local Corner4 = Instance.new("UICorner", CheckKey)
+Corner4.CornerRadius = UDim.new(0,10)
+
+local Status = Instance.new("TextLabel")
+Status.Size = UDim2.new(1,0,0,25)
+Status.Position = UDim2.new(0,0,1,-25)
+Status.BackgroundTransparency = 1
+Status.Text = ""
+Status.TextColor3 = Color3.new(1,1,1)
+Status.TextScaled = true
+Status.Font = Enum.Font.Gotham
+Status.Parent = Main
+
+-- Get Key
+GetKey.MouseButton1Click:Connect(function()
+	setclipboard("Facebook Anh tủn eo")
+	Status.Text = "Lên Facebook tìm: Anh tủn eo"
+end)
+
+-- Check Key
+CheckKey.MouseButton1Click:Connect(function()
+	if KeyBox.Text == correctKey then
+		Status.Text = "Key Correct!"
+
+		wait(1)
+
+		ScreenGui:Destroy()
+
+		-- ORION LIB
+		
+
+		Tab:AddParagraph("Loaded", "Script Loaded Successfully")
+
+		OrionLib:Init()
+
+	else
+		Status.Text = "Wrong Key!"
+	end
+end)
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/duysira5/Hehe/refs/heads/main/Orion.lua.txt"))()
 
 local Players = game:GetService("Players")
